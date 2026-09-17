@@ -55,7 +55,7 @@ A navegação principal será feita por uma barra inferior, permitindo acesso di
 
 ## 9. Tecnologia de backend
 
-Na primeira etapa, não haverá backend. Em uma evolução futura, poderá ser utilizado **Node.js com Express** para disponibilizar uma API REST e sincronizar dados entre dispositivos.
+Na Etapa 02, não há backend. Para a evolução funcional, foi escolhido **Supabase Cloud Free**, com Supabase Auth e PostgreSQL, políticas RLS por usuário e Edge Functions para operações privilegiadas quando necessário.
 
 ## 10. APIs externas
 
@@ -63,7 +63,7 @@ Não serão utilizadas APIs externas na versão inicial. Notificações locais p
 
 ## 11. Armazenamento de dados
 
-Inicialmente, os dados serão simulados em memória. Depois, serão persistidos no dispositivo com **AsyncStorage**. Caso o backend seja desenvolvido, o banco de dados previsto é o **PostgreSQL**.
+Na Etapa 02, os dados são simulados em memória. A persistência principal futura será PostgreSQL no Supabase. AsyncStorage poderá armazenar preferências não sensíveis; credenciais exigirão armazenamento seguro. Metas terão histórico de vigência em uma etapa futura.
 
 ## 12. Repositório Git
 

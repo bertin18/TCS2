@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "VivaBem",
+    "slug": "vivabem",
+    "version": "0.2.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "ios": { "supportsTablet": true },
+    "android": { "edgeToEdgeEnabled": true }
+  }
+}
