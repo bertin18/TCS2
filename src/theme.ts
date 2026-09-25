@@ -6,7 +6,11 @@ export const colors = {
   mint: '#E0EFE4',
   lime: '#DCF19B',
   ink: '#22342C',
-  muted: '#65766C',
+  muted: '#526259',
   line: '#E4EAE3',
   orange: '#F5B86B',
+  inputBorder: '#728078',
+  error: '#9C2634',
+  errorBackground: '#FFF0F1',
+  pressed: '#D0E5D5',
 };

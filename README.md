@@ -1,96 +1,89 @@
 # VivaBem — Saúde e Nutrição
 
-Aplicativo mobile para acompanhar alimentação, hidratação, sono e atividade física, com metas pessoais e histórico de evolução.
+Aplicativo mobile para pessoas adultas acompanharem alimentação, hidratação, sono e atividade física em um só lugar. O objetivo é organizar registros cotidianos e metas pessoais; o aplicativo não faz diagnóstico ou prescrição.
 
-**Status:** Etapa 02 — protótipo visual e navegável em React Native/Expo. Os dados são simulados e mantidos apenas em memória. Ainda não há backend, autenticação ou banco de dados.
+**Etapa 03 — versão 0.3.0:** navegação com retorno, feedback dos formulários, recursos de acessibilidade e registros datados. A integração de persistência com Supabase está implementada; o projeto inicial já tem as tabelas e políticas de acesso aplicadas. A validação ponta a ponta no celular ainda está pendente.
 
-## Problema que resolve
+## Implementado
 
-Registros dispersos dificultam acompanhar hábitos e perceber o progresso. O VivaBem pretende reunir essas informações em uma rotina simples de registro e consulta.
+- Telas Início, Alimentação, Hábitos, Evolução, Metas e Perfil, além de acesso/cadastro.
+- Abas e histórico de retorno, botão Voltar do Android e proteção contra descarte acidental de rascunhos.
+- Estados de carregamento, sucesso, erro, seleção, foco e controles indisponíveis durante operações.
+- Rótulos e estados acessíveis, foco nos títulos, anúncios de feedback, fontes escaláveis e alvos de toque ampliados.
+- Usuário novo sem refeições ou hábitos fictícios. Registros têm data e hora; resumo diário e evolução de sete dias usam esses dados.
+- Validação de nomes, refeições, hábitos e metas, com limites técnicos explícitos.
+- Adaptador Supabase, SQL de criação das tabelas, RLS por usuário e versões imutáveis de metas.
+- Sessão protegida com Expo SecureStore no Android/iOS.
+- Modo **Explorar sem salvar**, separado da conta e identificado como temporário em todas as telas.
 
-## Público e objetivo
-
-Voltado a pessoas adultas que desejam organizar seus hábitos. O objetivo é apoiar registros cotidianos, metas editáveis e acompanhamento diário e semanal. O aplicativo não realiza diagnósticos, prescrições ou avaliação clínica.
+As metas iniciais são sugestões pessoais editáveis. Não atribuímos valores universais de água ou sono à OMS.
 
 ## Tecnologias
 
-| Componente | Escolha para implementação |
-| --- | --- |
-| Mobile | React Native, Expo e TypeScript |
-| Estado do protótipo | React `useState`, sem persistência |
-| Backend futuro | Supabase Auth e PostgreSQL, ainda não configurados |
-| Distribuição prevista | Expo/EAS e APK de teste Android; lojas em etapa posterior |
+React Native, Expo SDK 57 e TypeScript. Supabase Auth e PostgreSQL para persistência quando configurados; hospedagem planejada no Supabase Cloud Free. Testes com Node.js e PGlite para validar SQL e acesso entre contas.
 
-O Supabase é o backend planejado para uma versão futura. Este protótipo não se conecta a serviços externos.
+## Executar
 
-## Funcionalidades planejadas
+Pré-requisitos: Node.js 24, npm e Expo Go compatível ou um emulador Android. O simulador iOS requer macOS; iPhone físico pode usar Expo Go.
 
-- Cadastro, login, confirmação de e-mail e recuperação de acesso;
-- Registro, edição e exclusão de refeições, água, sono e exercícios;
-- Metas diárias ou semanais, editáveis, pausáveis e com histórico de vigência;
-- Sugestões baseadas em fontes oficiais aplicáveis, identificando instituição e versão;
-- Resumo diário, histórico semanal e consulta por período;
-- Perfil, preferências, exportação de dados e exclusão de conta.
-
-As metas pessoais serão diferenciadas de referências oficiais. Não será atribuído à OMS um padrão de água ou sono sem fonte validada.
-
-## Funcionalidades implementadas
-
-- Navegação por abas entre **Início**, **Alimentação**, **Hábitos** e **Evolução**; acesso a **Metas** e **Perfil** pela tela inicial;
-- Registro de refeições, água, sono e atividade física com atualização do resumo durante a sessão;
-- Edição de metas pessoais e nome do perfil em memória;
-- Gráfico semanal ilustrativo com dados simulados;
-- Layout rolável, largura limitada para telas maiores e componentes reutilizáveis.
-
-## Instruções para execução
-
-Pré-requisito: Node.js compatível com Expo SDK 57 e o aplicativo Expo Go no celular (ou um emulador Android/iOS configurado).
-
-```bash
-npm install
-npx expo login
+```sh
+npm ci
 npm start
 ```
 
-Entre no Expo Go com a mesma conta usada no `npx expo login`. Depois, leia o QR code mostrado no terminal. Se aparecer a mensagem para executar `npx expo login` no computador, confirme a conta do CLI com `npx expo whoami`, entre na mesma conta no Expo Go e reinicie `npm start`. Para abrir diretamente no emulador Android, use `npm run android`. Para verificar a tipagem, use `npm run typecheck`. Não há variáveis de ambiente nesta etapa.
+Abra o QR code no celular. Se houver restrição de rede local, use `npm run start:tunnel`. Para emulador Android: `npm run android`. Sem backend configurado, escolha **Explorar sem salvar**.
 
-Se o projeto estiver rodando no WSL ou o celular não conseguir acessar o endereço mostrado pelo Expo, use `npm run start:tunnel` e leia o novo QR code. Aguarde a mensagem `Tunnel ready.` antes de escanear. O túnel precisa de internet. Com a conexão local, computador e celular precisam estar na mesma rede; VPN ou isolamento de dispositivos no Wi-Fi podem impedir o acesso. No iPhone, leia o QR code pela câmera; no Android, use o Expo Go.
+Para persistir, execute a [migration](supabase/migrations/202609180001_vivabem_records.sql) em um projeto Supabase de desenvolvimento, copie `.env.example` para `.env`, preencha a URL e a chave pública `sb_publishable_`, configure confirmação de e-mail e reinicie o Expo. O [guia da Etapa 03](docs/etapa-03.md) detalha a configuração. Nunca inclua senha do banco ou chave secreta/service_role no aplicativo.
+
+## Verificações
+
+```sh
+npm run check
+npx expo export --platform android --output-dir dist/android
+npx expo export --platform ios --output-dir dist/ios
+```
+
+`check` executa TypeScript e testes de navegação, validações, datas, contraste, armazenamento de sessão e RLS/SQL. Exportações validam os bundles; não geram APK/IPA.
 
 ## Limitações conhecidas
 
-- Autenticação, persistência, comunicação com servidor e testes automatizados ainda não implementados;
-- Registros e alterações voltam aos valores iniciais ao reiniciar o aplicativo;
-- O gráfico semanal é ilustrativo e não reflete os registros adicionados pelo usuário;
-- Sem sincronização offline na primeira versão funcional;
-- Sem cálculo automático de calorias, dietas ou integração com dispositivos;
-- Fontes complementares para água e sono e critérios de público ainda precisam de revisão;
-- A infraestrutura Supabase ainda não foi provisionada;
-- Uma arquitetura voltada a produção ainda exige implementação e validação dos controles antes de receber usuários reais.
+- Na configuração local, URL e chave pública do Supabase estão preenchidas em `.env` (ignorado pelo Git). A migration foi aplicada no projeto inicial, com RLS ativo e acesso anônimo bloqueado nas quatro tabelas. Falta testar a persistência com uma conta no celular. Outras instalações devem configurar seu próprio `.env`; não execute novamente a migration inicial em um banco onde ela já foi aplicada.
+- Testes interativos em celular, com TalkBack/VoiceOver e fontes ampliadas, permanecem no roteiro manual.
+- O modo sem conta perde dados ao sair/reiniciar e não migra automaticamente para uma conta.
+- Não há persistência offline, sincronização em segundo plano, edição/exclusão de refeições ou consulta além dos sete dias na interface. Registros antigos permanecem no banco.
+- Recuperação de senha, exclusão/exportação de conta e controles operacionais de produção ainda precisam ser implementados e validados.
+- Sem cálculo automático de calorias, dietas, integração com dispositivos ou recomendações clínicas.
 
-## Documentação
-
-- [Proposta com os 13 itens da disciplina](docs/proposta.md)
-- [Documentação da Etapa 02](docs/etapa-02.md)
-
-## Estrutura atual
+## Estrutura
 
 ```text
 TCS2/
+├── README.md
+├── .env.example
 ├── app.json
 ├── index.ts
 ├── package.json
-├── README.md
 ├── src/
 │   ├── App.tsx
+│   ├── data.ts
+│   ├── navigation.ts
+│   ├── validation.ts
+│   ├── theme.ts
 │   ├── components/
-│   └── screens/
+│   ├── screens/
+│   └── services/
+├── supabase/migrations/
+├── tests/
 └── docs/
     ├── proposta.md
-    └── etapa-02.md
+    ├── etapa-02.md
+    └── etapa-03.md
 ```
 
-## Histórico de decisões
+## Entregas
 
-- A entrega inicial foi identificada pela tag `etapa-01`.
-- Em 09/09/2026, o planejamento passou a adotar Supabase Cloud Free, metas versionadas e requisitos de segurança desde o início.
-- A tag da entrega inicial permanece como registro histórico; esta revisão da documentação não a reposiciona.
+- [Proposta da aplicação](docs/proposta.md) — tag `etapa-01`.
+- [Protótipo da Etapa 02](docs/etapa-02.md) — tag `etapa-02`; documentação histórica.
+- [Navegação, UX e acessibilidade da Etapa 03](docs/etapa-03.md) — tag `etapa-03`.
+
+Repositório: [bertin18/TCS2](https://github.com/bertin18/TCS2). As tags anteriores são preservadas.

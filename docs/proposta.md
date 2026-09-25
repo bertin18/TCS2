@@ -81,3 +81,7 @@ TCS2/
 ```
 
 A estrutura será ampliada nas próximas etapas, incluindo as pastas `src/`, `components/`, `screens/` e `services/` quando o desenvolvimento do aplicativo for iniciado.
+
+## Evolução na Etapa 03
+
+A implementação agora inclui navegação de retorno, acessibilidade, formulários com feedback e registros datados sem dados fictícios iniciais. O adaptador de persistência Supabase e a migration com RLS estão no repositório; seu uso real depende da configuração do projeto, descrita em [etapa-03.md](etapa-03.md). Sem conta, a exploração é explicitamente temporária. Os hábitos compartilham a tabela `habit_entries`, diferenciados por tipo, e as metas usam versões imutáveis em `user_goal_versions`. A estrutura executável atual está no README; as tags anteriores preservam as entregas históricas.
